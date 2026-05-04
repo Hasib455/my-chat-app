@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CyberChat</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="dark">
+
+    <!-- Theme Control -->
+    <button id="theme-toggle" class="fixed-corner-btn">🌙</button>
+
+    <!-- Welcome Screen -->
+    <div id="setup">
+        <h1>CyberChat</h1>
+        <input type="text" id="name-input" placeholder="Your Name">
+        <input type="text" id="interests-input" placeholder="Interests (comma separated)">
+        <button id="start-btn">Find a Stranger</button>
+    </div>
+
+    <!-- Active Chat Screen -->
+    <div id="chat-container" style="display: none;">
+        <div id="chat-header">
+            <div id="partner-name">Stranger</div>
+            <div id="header-actions">
+                <button id="save-btn" title="Download Log">💾</button>
+                <button id="call-btn" title="Start Video Call">📹</button>
+                <button id="report-btn">Report</button>
+                <button id="leave-btn">Leave</button>
+            </div>
+        </div>
+
+        <div id="video-overlay">
+            <video id="local-video" autoplay muted playsinline></video>
+            <video id="remote-video" autoplay playsinline></video>
+            <div class="call-controls">
+                <button id="end-call-btn" class="end-call-btn">End Call</button>
+            </div>
+        </div>
+
+        <div id="messages"></div>
+
+        <div id="emoji-bar">
+            <span>😊</span><span>😂</span><span>❤️</span><span>👍</span>
+            <span>🔥</span><span>✨</span><span>😮</span><span>😢</span>
+        </div>
+
+        <div id="input-area">
+            <label for="image-input" id="image-btn">📷</label>
+            <input type="file" id="image-input" accept="image/*" style="display: none;">
+            
+            <button id="record-btn">🎤</button>
+            
+            <input type="text" id="msg-input" placeholder="Say something..." autocomplete="off">
+            <button id="send-btn">Send</button>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="client.js"></script>
+</body>
+</html>
