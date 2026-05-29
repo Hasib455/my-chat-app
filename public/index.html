@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" type="image/png" href="favicon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CyberChat</title>
+    <title>Promptly</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body data-theme="dark">
@@ -13,7 +14,7 @@
 
     <!-- Welcome Screen -->
     <div id="setup">
-        <h1>CyberChat</h1>
+        <h1>Promptly</h1>
         <input type="text" id="name-input" placeholder="Your Name">
         <input type="text" id="interests-input" placeholder="Interests (comma separated)">
         <button id="start-btn">Find a Stranger</button>
@@ -46,15 +47,15 @@
             <span>🔥</span><span>✨</span><span>😮</span><span>😢</span>
         </div>
 
-        <div id="input-area">
-            <label for="image-input" id="image-btn">📷</label>
-            <input type="file" id="image-input" accept="image/*" style="display: none;">
-            
-            <button id="record-btn">🎤</button>
-            
-            <input type="text" id="msg-input" placeholder="Say something..." autocomplete="off">
-            <button id="send-btn">Send</button>
-        </div>
+       <div id="input-area">
+    <label for="image-input" id="image-btn" class="input-icon-btn">📷</label>
+    <input type="file" id="image-input" accept="image/*" style="display: none;">
+
+    <button id="record-btn" class="input-icon-btn">🎤</button>
+
+    <input type="text" id="msg-input" placeholder="Say something..." autocomplete="off">
+    <button id="send-btn">Send</button>
+</div>
     </div>
 
     <script src="/socket.io/socket.io.js"></script>

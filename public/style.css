@@ -141,14 +141,15 @@ html, body {
     font-size: 0.9rem;
 }
 
-/* Message List */
+/* 1. Update the message list to remove unnecessary gap interference */
 #messages {
     flex: 1;
     padding: 20px;
+    padding-bottom: 40px; /* Add padding here so the last reaction is never clipped */
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 30px; /* Space for reaction badges */
+    gap: 15px; 
 }
 
 .msg {
@@ -158,6 +159,7 @@ html, body {
     position: relative;
     word-wrap: break-word;
     cursor: pointer;
+    margin-bottom: 10px; /* Add margin here instead of using container gap */
 }
 
 .me {
@@ -175,9 +177,11 @@ html, body {
 /* Reaction Badges */
 .reaction-container {
     position: absolute;
-    bottom: -20px;
+    bottom: -22px; 
     display: flex;
     gap: 4px;
+    z-index: 100; /* CRITICAL: High z-index to be on top */
+    pointer-events: none; /* Allows clicks to pass through to the bubble if needed */
 }
 
 .me .reaction-container { right: 8px; }
@@ -190,6 +194,7 @@ html, body {
     padding: 2px 8px;
     font-size: 0.85rem;
     backdrop-filter: blur(8px);
+    pointer-events: auto; /* Re-enable clicking just for the badge */
 }
 
 /* Floating Reaction Menu */
@@ -238,13 +243,7 @@ html, body {
     background: rgba(255,255,255,0.1);
 }
 
-/* Input Area */
-#input-area {
-    padding: 15px;
-    display: flex;
-    gap: 12px;
-    align-items: center;
-}
+
 
 #msg-input {
     flex: 1;
@@ -257,11 +256,6 @@ html, body {
     font-size: 1rem;
 }
 
-#image-btn {
-    cursor: pointer;
-    font-size: 1.4rem;
-    padding: 0 5px;
-}
 
 #send-btn {
     background: var(--accent);
@@ -387,4 +381,42 @@ html, body {
     border-radius: 50px;
     cursor: pointer;
     font-weight: bold;
+}
+
+/* --- FIXED INPUT AREA --- */
+#input-area {
+    padding: 15px 20px; /* Added horizontal padding to stop hugging the edges */
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-top: 1px solid var(--glass-border);
+    background: rgba(0, 0, 0, 0.1); /* Slight background to separate it from messages */
+}
+
+.input-icon-btn {
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px; /* Increased width/height for better clickability */
+    height: 32px;
+    font-size: 1.4rem; 
+    line-height: 1;
+    vertical-align: middle;
+    transition: transform 0.2s;
+    margin-top: 3px !important; 
+}
+
+.input-icon-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Nudge the microphone down to match the camera */
+#record-btn {
+    margin-top: 11px !important; 
 }

@@ -36,7 +36,7 @@ messagesDiv.parentNode.insertBefore(typingDiv, messagesDiv.nextSibling);
 window.onfocus = () => {
     isFocused = true;
     unreadCount = 0;
-    document.title = "CyberChat";
+    document.title = "Promptly";
 };
 
 window.onblur = () => {
@@ -63,7 +63,7 @@ function showReactionMenu(e, msgElement) {
         span.onclick = (ev) => {
             ev.stopPropagation();
             applyReaction(msgElement, emoji, false); // Local update
-            socket.emit('send-reaction', { emoji }); // Sync to partner
+            socket.emit('send-reaction', { emoji: emoji, messageId: msgElement.id }); // Sync to partner
             menu.remove();
         };
         menu.appendChild(span);
@@ -115,6 +115,7 @@ function addMessage(data) {
     const side = data.sender === 'Me' ? 'me' : 'stranger';
     const msgDiv = document.createElement('div');
     msgDiv.className = `msg ${side}`;
+    msgDiv.id = data.id; // Use the ID passed from the server
     
     // Generate Current Timestamp
     const now = new Date();
@@ -283,7 +284,7 @@ document.getElementById('save-btn').onclick = () => {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `CyberChat_History_${Date.now()}.txt`;
+    link.download = `Promptly_History_${Date.now()}.txt`;
     link.click();
     URL.revokeObjectURL(url);
 };
@@ -296,7 +297,7 @@ document.getElementById('leave-btn').onclick = () => {
 
 document.getElementById('report-btn').onclick = () => {
     if (confirm("Report this user for inappropriate behavior? This will end the chat.")) {
-        alert("User reported. Thank you for keeping CyberChat safe.");
+        alert("User reported. Thank you for keeping Promptly safe.");
         location.reload();
     }
 };
@@ -316,7 +317,7 @@ startBtn.onclick = () => {
     if (!name) return alert("Please enter your name first!");
     
     // PERSISTENCE: Save name for next refresh
-    localStorage.setItem('cyberchat-name', name);
+    localStorage.setItem('Promptly-name', name);
     
     socket.emit('find-partner', { name, interests });
     
@@ -346,7 +347,10 @@ msgInput.onkeypress = (e) => { if (e.key === 'Enter') attemptSendMessage(); };
 socket.on('chat-started', (data) => {
     setupDiv.style.display = 'none';
     chatContainer.style.display = 'flex';
+
+    // Explicitly set the name from the server, not localStorage
     partnerNameDisplay.innerText = data.name;
+    console.log("Chat started with:", data.name);
     
     let startMsg = `--- Chat started with ${data.name} ---`;
 
@@ -370,8 +374,7 @@ socket.on('receive-message', (data) => {
 });
 
 socket.on('receive-reaction', (data) => {
-    const allMsgs = document.querySelectorAll('.msg');
-    const targetMsg = allMsgs[allMsgs.length - 1];
+    const targetMsg = document.getElementById(data.messageId);
     if (targetMsg) {
         applyReaction(targetMsg, data.emoji, true);
     }
@@ -434,10 +437,12 @@ document.getElementById('theme-toggle').onclick = () => {
 };
 
 window.onload = () => {
-    // Load persisted name
-    const savedName = localStorage.getItem('cyberchat-name');
-    if (savedName) {
-        document.getElementById('name-input').value = savedName;
+    const nameInput = document.getElementById('name-input');
+    const savedName = localStorage.getItem('Promptly-name');
+
+    // Only restore saved name if the input is currently empty
+    if (savedName && nameInput.value === "") {
+        nameInput.value = savedName;
     }
 };
 
